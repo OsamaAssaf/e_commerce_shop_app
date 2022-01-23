@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Osama Shop</string>
+    <string name="facebook_app_id">260629606182316</string>
+    <string name="fb_login_protocol_scheme">fb260629606182316</string>
+    <string name="facebook_client_token">13c38ffa61c8c38fc2d8067cc31f45ec</string>
+</resources>
