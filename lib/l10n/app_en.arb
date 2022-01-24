@@ -1,0 +1,9 @@
+{
+  "welcome": "Welcome to Osama Shop",
+  "region": "Country/Region",
+  "language": "Language",
+  "currency": "Currency",
+  "go_shopping": "GO SHOPPING",
+  "first_hint": "You can go to the \"Settings\" page to modify later",
+  "settings": "Settings"
+}
