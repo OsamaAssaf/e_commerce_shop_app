@@ -4,12 +4,12 @@ class WomenScreen extends StatefulWidget {
   const WomenScreen({Key? key}) : super(key: key);
 
   @override
-  _WomenScreenState createState() => _WomenScreenState();
+  WomenScreenState createState() => WomenScreenState();
 }
 
-class _WomenScreenState extends State<WomenScreen> {
+class WomenScreenState extends State<WomenScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

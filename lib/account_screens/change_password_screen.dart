@@ -4,7 +4,6 @@ import 'package:osama_shop/controllers/auth.dart';
 import 'package:osama_shop/widgets/app_bar.dart';
 import 'package:provider/provider.dart';
 
-
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
 
@@ -35,10 +34,9 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-
     User? user = context.watch<Auth>().user;
 
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBarWidget.setNormalAppBar('Change Password', context),
       body: Form(
         key: _formKey,
@@ -47,30 +45,29 @@ class _ChangePasswordState extends State<ChangePassword> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 16.0,),
+                const SizedBox(
+                  height: 16.0,
+                ),
                 TextFormField(
-                  decoration:const InputDecoration(
-                    labelText: 'Old password'
-                  ),
-                  validator: (value){
+                  decoration: const InputDecoration(labelText: 'Old password'),
+                  validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
-                    } return null;
+                    }
+                    return null;
                   },
-                  onSaved: (value){
+                  onSaved: (value) {
                     oldPassword = value;
                   },
                 ),
-                const SizedBox(height: 16.0,),
+                const SizedBox(
+                  height: 16.0,
+                ),
                 TextFormField(
                   controller: _newPasswordController,
-                  decoration:const InputDecoration(
-                      labelText: 'New password'
-                  ),
-                  validator: (value){
-                    if (value == null ||
-                        value.isEmpty ||
-                        value.length < 8) {
+                  decoration: const InputDecoration(labelText: 'New password'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty || value.length < 8) {
                       return '8 characters minimum';
                     } else if (!value.contains(RegExp(r'[0-9]'))) {
                       return 'At least one number';
@@ -79,45 +76,45 @@ class _ChangePasswordState extends State<ChangePassword> {
                     }
                     return null;
                   },
-                  onSaved: (value){
+                  onSaved: (value) {
                     newPassword = value;
                   },
                 ),
-                const SizedBox(height: 16.0,),
+                const SizedBox(
+                  height: 16.0,
+                ),
                 TextFormField(
-                  decoration:const InputDecoration(
-                      labelText: 'Confirm password'
-                  ),
-                  validator: (value){
+                  decoration: const InputDecoration(labelText: 'Confirm password'),
+                  validator: (value) {
                     if (value == null || value.isEmpty || value != _newPasswordController!.text) {
                       return 'New password and confirm password do not match.';
-                    } return null;
+                    }
+                    return null;
                   },
-
                 ),
-                const SizedBox(height: 32.0,),
+                const SizedBox(
+                  height: 32.0,
+                ),
                 SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    child: const Text(
-                      'SUBMIT',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.black),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero))),
-                    onPressed: () async{
-                      if(_formKey.currentState!.validate()){
+                            const RoundedRectangleBorder(borderRadius: BorderRadius.zero))),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         print(oldPassword);
                         print(newPassword);
                         _changePassword(oldPassword!.trim(), newPassword!.trim(), user);
                       }
-
                     },
+                    child: const Text(
+                      'SUBMIT',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                 )
               ],
@@ -128,8 +125,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     );
   }
 
-  void _changePassword(String oldPassword,String newPassword,User? user) async {
-
+  void _changePassword(String oldPassword, String newPassword, User? user) async {
     String? email = user!.email;
 
     try {
@@ -138,13 +134,13 @@ class _ChangePasswordState extends State<ChangePassword> {
         password: oldPassword,
       );
 
-      user.updatePassword(newPassword).then((_){
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Successfully changed password')));
+      user.updatePassword(newPassword).then((_) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Successfully changed password')));
         Navigator.of(context).pop();
-
-      }).catchError((error){
-        ScaffoldMessenger.of(context).showSnackBar( SnackBar(content: Text('Password can\'t be changed' + error.toString())));
-
+      }).catchError((error) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Password can\'t be changed$error')));
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

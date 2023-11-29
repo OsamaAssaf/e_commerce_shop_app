@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:iso_countries/country.dart';
 import 'package:iso_countries/iso_countries.dart';
 import 'package:osama_shop/account_screens/edit_profile.dart';
 import 'package:osama_shop/controllers/auth.dart';
@@ -51,7 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     currentCountry = details.name!;
     List<Country>? countries;
     try {
-      countries = await IsoCountries.iso_countries;
+      countries = await IsoCountries.isoCountries;
     } on PlatformException {
       countries = null;
     }
@@ -65,10 +64,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     for (int i = 0; i < alphabets.length; i++) {
       if (!alphabetsIndex.containsKey(alphabets[i])) {
-        String c =
-            countriesName.firstWhere((element) => element[0] == alphabets[i]);
-        alphabetsIndex[alphabets[i]] =
-            countriesName.indexWhere((element) => element == c);
+        String c = countriesName.firstWhere((element) => element[0] == alphabets[i]);
+        alphabetsIndex[alphabets[i]] = countriesName.indexWhere((element) => element == c);
       }
     }
   }
@@ -95,7 +92,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       }
     }
 
-    AppLocalizations appLocalizations = AppLocalizations.of(context);
+    AppLocalizations? appLocalizations = AppLocalizations.of(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     language = context.watch<Settings>().language;
@@ -126,28 +123,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
             if (context.watch<Auth>().user == null)
               boldListTile(context, 'SIGN IN / REGISTER', () {
                 Navigator.of(context).push(PageTransition(
-                    child: const AuthScreen(),
-                    type: PageTransitionType.rightToLeft));
+                    child: const AuthScreen(), type: PageTransitionType.rightToLeft));
               }),
             if (user != null)
               boldListTile(
-                  context,
-                  name,
-                  () => PushScreens.pushScreens(
-                      context, const EditProfileScreen())),
+                  context, name, () => PushScreens.pushScreens(context, const EditProfileScreen())),
             const Divider(
               thickness: 10.0,
             ),
             normalListTile(context, 'Address Book', () {
-              Navigator.of(context).push(PageTransition(
-                  child: const AuthScreen(),
-                  type: PageTransitionType.rightToLeft));
+              Navigator.of(context).push(
+                  PageTransition(child: const AuthScreen(), type: PageTransitionType.rightToLeft));
             }),
             const Divider(),
             normalListTile(context, 'My Payment Options', () {
-              Navigator.of(context).push(PageTransition(
-                  child: const AuthScreen(),
-                  type: PageTransitionType.rightToLeft));
+              Navigator.of(context).push(
+                  PageTransition(child: const AuthScreen(), type: PageTransitionType.rightToLeft));
             }),
             if (context.watch<Auth>().user != null) const Divider(),
             if (context.watch<Auth>().user != null)
@@ -161,11 +152,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               countryBottomSheet(context, height, width);
             }, Text(currentCountry!)),
             const Divider(),
-            normalListTile(context, appLocalizations.language, () {
+            normalListTile(context, appLocalizations!.language, () {
               languageBottomSheet(context, height);
             }, Text(language!)),
             const Divider(),
-            normalListTile(context, 'Currency', () {currencyBottomSheet(context, height);},Text(currentCurrencyName!)),
+            normalListTile(context, 'Currency', () {
+              currencyBottomSheet(context, height);
+            }, Text(currentCurrencyName!)),
             const Divider(),
             normalListTile(context, 'Content Preferences', () {}),
             const Divider(),
@@ -186,8 +179,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Center(
                 child: Text(
                   'Version 0.0.1',
-                  style: TextStyle(
-                      color: Colors.grey[700], fontWeight: FontWeight.normal),
+                  style: TextStyle(color: Colors.grey[700], fontWeight: FontWeight.normal),
                 ),
               ),
             )
@@ -211,8 +203,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  ListTile normalListTile(BuildContext context, String title, Function() onTap,
-      [Widget? widget]) {
+  ListTile normalListTile(BuildContext context, String title, Function() onTap, [Widget? widget]) {
     return ListTile(
       title: Text(
         title,
@@ -235,8 +226,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Future<dynamic> countryBottomSheet(
-      BuildContext context, double height, double width) {
+  Future<dynamic> countryBottomSheet(BuildContext context, double height, double width) {
     return showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -246,31 +236,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               children: [
                 Align(
+                  alignment: Alignment.topRight,
                   child: GestureDetector(
                     child: const Icon(Icons.close),
                     onTap: () {
                       Navigator.of(context).pop();
                     },
                   ),
-                  alignment: Alignment.topRight,
                 ),
-                Text(AppLocalizations.of(context).region),
+                Text(AppLocalizations.of(context)!.region),
                 const SizedBox(
                   height: 10.0,
                 ),
                 const Divider(),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: TextField(
                     controller: _countryController,
                     decoration: InputDecoration(
                         fillColor: Colors.grey[200],
                         filled: true,
                         prefixIcon: const Icon(Icons.search),
-                        hintText: AppLocalizations.of(context).region,
-                        border: const OutlineInputBorder(
-                            borderSide: BorderSide.none)),
+                        hintText: AppLocalizations.of(context)!.region,
+                        border: const OutlineInputBorder(borderSide: BorderSide.none)),
                     onChanged: (value) {},
                   ),
                 ),
@@ -290,18 +278,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     String country = countriesName[index];
                                     if (index == alphabetsIndex[country[0]]) {
                                       return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 16.0),
+                                            padding: const EdgeInsets.only(left: 16.0),
                                             child: Text(
-                                              alphabetsIndex.keys.firstWhere(
-                                                  (element) =>
-                                                      element == country[0]),
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
+                                              alphabetsIndex.keys
+                                                  .firstWhere((element) => element == country[0]),
+                                              style: const TextStyle(fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                           ListTile(
@@ -337,54 +321,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   itemCount: alphabets.length,
                                   itemBuilder: (ctx, index) {
                                     return Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         GestureDetector(
                                           child: Text(alphabets[index]),
                                           onTap: () {
-                                            print(
-                                                'onTap: ${alphabetsIndex[alphabets[index]]}');
+                                            print('onTap: ${alphabetsIndex[alphabets[index]]}');
                                             _scrollController!.scrollTo(
-                                                index: alphabetsIndex[
-                                                    alphabets[index]]!,
-                                                duration: const Duration(
-                                                    milliseconds: 200));
+                                                index: alphabetsIndex[alphabets[index]]!,
+                                                duration: const Duration(milliseconds: 200));
                                           },
-                                          onVerticalDragStart:
-                                              (DragStartDetails details) {
+                                          onVerticalDragStart: (DragStartDetails details) {
                                             print('Start: $details');
-                                            print(
-                                                'Start: ${alphabetsIndex[alphabets[index]]}');
+                                            print('Start: ${alphabetsIndex[alphabets[index]]}');
                                             _scrollController!.scrollTo(
-                                                index: alphabetsIndex[
-                                                    alphabets[index]]!,
-                                                duration: const Duration(
-                                                    milliseconds: 200));
+                                                index: alphabetsIndex[alphabets[index]]!,
+                                                duration: const Duration(milliseconds: 200));
                                           },
-                                          onVerticalDragUpdate:
-                                              (DragUpdateDetails details) {
+                                          onVerticalDragUpdate: (DragUpdateDetails details) {
                                             print('Update: $details');
-                                            print(
-                                                'Update: ${alphabetsIndex[alphabets[index]]}');
+                                            print('Update: ${alphabetsIndex[alphabets[index]]}');
                                             _scrollController!.scrollTo(
-                                                index: alphabetsIndex[
-                                                    alphabets[index]]!,
-                                                duration: const Duration(
-                                                    milliseconds: 200));
+                                                index: alphabetsIndex[alphabets[index]]!,
+                                                duration: const Duration(milliseconds: 200));
                                           },
-                                          onVerticalDragEnd:
-                                              (DragEndDetails details) {
+                                          onVerticalDragEnd: (DragEndDetails details) {
                                             print('End: $details');
-                                            print(
-                                                'End: ${alphabetsIndex[alphabets[index]]}');
+                                            print('End: ${alphabetsIndex[alphabets[index]]}');
                                             _scrollController!.scrollTo(
-                                                index: alphabetsIndex[
-                                                    alphabets[index]]!,
-                                                duration: const Duration(
-                                                    milliseconds: 200));
+                                                index: alphabetsIndex[alphabets[index]]!,
+                                                duration: const Duration(milliseconds: 200));
                                           },
                                         ),
                                         const SizedBox(
@@ -426,13 +393,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 16.0),
+                                      padding: const EdgeInsets.only(left: 16.0),
                                       child: Text(
-                                        alphabetsIndex.keys.firstWhere(
-                                            (element) => element == country[0]),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                        alphabetsIndex.keys
+                                            .firstWhere((element) => element == country[0]),
+                                        style: const TextStyle(fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     ListTile(
@@ -474,46 +439,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   GestureDetector(
                                     child: Text(alphabets[index]),
                                     onTap: () {
-                                      print(
-                                          'onTap: ${alphabetsIndex[alphabets[index]]}');
+                                      print('onTap: ${alphabetsIndex[alphabets[index]]}');
                                       _scrollController!.scrollTo(
-                                          index:
-                                              alphabetsIndex[alphabets[index]]!,
-                                          duration: const Duration(
-                                              milliseconds: 200));
+                                          index: alphabetsIndex[alphabets[index]]!,
+                                          duration: const Duration(milliseconds: 200));
                                     },
-                                    onVerticalDragStart:
-                                        (DragStartDetails details) {
+                                    onVerticalDragStart: (DragStartDetails details) {
                                       print('Start: $details');
-                                      print(
-                                          'Start: ${alphabetsIndex[alphabets[index]]}');
+                                      print('Start: ${alphabetsIndex[alphabets[index]]}');
                                       _scrollController!.scrollTo(
-                                          index:
-                                              alphabetsIndex[alphabets[index]]!,
-                                          duration: const Duration(
-                                              milliseconds: 200));
+                                          index: alphabetsIndex[alphabets[index]]!,
+                                          duration: const Duration(milliseconds: 200));
                                     },
-                                    onVerticalDragUpdate:
-                                        (DragUpdateDetails details) {
+                                    onVerticalDragUpdate: (DragUpdateDetails details) {
                                       print('Update: $details');
-                                      print(
-                                          'Update: ${alphabetsIndex[alphabets[index]]}');
+                                      print('Update: ${alphabetsIndex[alphabets[index]]}');
                                       _scrollController!.scrollTo(
-                                          index:
-                                              alphabetsIndex[alphabets[index]]!,
-                                          duration: const Duration(
-                                              milliseconds: 200));
+                                          index: alphabetsIndex[alphabets[index]]!,
+                                          duration: const Duration(milliseconds: 200));
                                     },
-                                    onVerticalDragEnd:
-                                        (DragEndDetails details) {
+                                    onVerticalDragEnd: (DragEndDetails details) {
                                       print('End: $details');
-                                      print(
-                                          'End: ${alphabetsIndex[alphabets[index]]}');
+                                      print('End: ${alphabetsIndex[alphabets[index]]}');
                                       _scrollController!.scrollTo(
-                                          index:
-                                              alphabetsIndex[alphabets[index]]!,
-                                          duration: const Duration(
-                                              milliseconds: 200));
+                                          index: alphabetsIndex[alphabets[index]]!,
+                                          duration: const Duration(milliseconds: 200));
                                     },
                                   ),
                                   const SizedBox(
@@ -544,15 +494,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             children: [
               Align(
+                alignment: Alignment.topRight,
                 child: GestureDetector(
                   child: const Icon(Icons.close),
                   onTap: () {
                     Navigator.of(context).pop();
                   },
                 ),
-                alignment: Alignment.topRight,
               ),
-              Text(AppLocalizations.of(context).language),
+              Text(AppLocalizations.of(context)!.language),
               const SizedBox(
                 height: 10.0,
               ),
@@ -595,31 +545,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               children: [
                 Align(
+                  alignment: Alignment.topRight,
                   child: GestureDetector(
                     child: const Icon(Icons.close),
                     onTap: () {
                       Navigator.of(context).pop();
                     },
                   ),
-                  alignment: Alignment.topRight,
                 ),
-                Text(AppLocalizations.of(context).currency),
+                Text(AppLocalizations.of(context)!.currency),
                 const SizedBox(
                   height: 10.0,
                 ),
                 const Divider(),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: TextField(
                     controller: _currencyController,
                     decoration: InputDecoration(
                         fillColor: Colors.grey[200],
                         filled: true,
                         prefixIcon: const Icon(Icons.search),
-                        hintText: AppLocalizations.of(context).currency,
-                        border: const OutlineInputBorder(
-                            borderSide: BorderSide.none)),
+                        hintText: AppLocalizations.of(context)!.currency,
+                        border: const OutlineInputBorder(borderSide: BorderSide.none)),
                     onChanged: (value) {},
                   ),
                 ),
@@ -630,8 +578,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       itemCount: currencyList.length,
                       itemBuilder: (ctx, index) {
                         String currency = currencyList[index];
-                        NumberFormat format =
-                            NumberFormat.simpleCurrency(name: currency);
+                        NumberFormat format = NumberFormat.simpleCurrency(name: currency);
                         return Column(
                           children: [
                             const Divider(),

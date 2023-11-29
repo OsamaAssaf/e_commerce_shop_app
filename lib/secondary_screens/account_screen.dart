@@ -39,12 +39,12 @@ class AccountScreen extends StatelessWidget {
                 buildListTile('Email verification', () {
                   PushScreens.pushScreens(context, const EmailVerification());
                 }),
-                if(user!.email != null)
+                if (user!.email != null) const Divider(),
+                if (user.email != null) buildListTile('Phone Number', () {}),
                 const Divider(),
-                if(user.email != null)
-                buildListTile('Phone Number', () {}),
-                const Divider(),
-                buildListTile('Change password', () {PushScreens.pushScreens(context, ChangePassword());}),
+                buildListTile('Change password', () {
+                  PushScreens.pushScreens(context, const ChangePassword());
+                }),
                 const Divider(),
                 buildListTile('Delete Account', () {}),
               ],
@@ -119,8 +119,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                 width: double.infinity,
                 height: 50,
                 color: Colors.grey[300],
-                child:
-                    Center(child: Text('${context.watch<Auth>().user!.email}')),
+                child: Center(child: Text('${context.watch<Auth>().user!.email}')),
               ),
               const SizedBox(
                 height: 16.0,
@@ -129,24 +128,17 @@ class _EmailVerificationState extends State<EmailVerification> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  child: Text(
-                    verifySent ? '$time S' : 'Verify',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 22),
-                  ),
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.black),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero))),
+                          const RoundedRectangleBorder(borderRadius: BorderRadius.zero))),
                   onPressed: () async {
                     try {
                       await context.read<Auth>().user!.sendEmailVerification();
                       setState(() {
                         verifySent = true;
                       });
-                      _timer =
-                          Timer.periodic(const Duration(seconds: 1), (timer) {
+                      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
                         if (time == 1) {
                           _timer!.cancel();
                           setState(() {
@@ -159,24 +151,29 @@ class _EmailVerificationState extends State<EmailVerification> {
                         });
                       });
                     } on FirebaseAuthException catch (e) {
-                      showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                                content: Text(e.message!),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.of(ctx).pop();
-                                      },
-                                      child: Text(
-                                        'Ok',
-                                        style:
-                                            TextStyle(color: Colors.blue[900]),
-                                      )),
-                                ],
-                              ));
+                      if (context.mounted) {
+                        showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                                  content: Text(e.message!),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(ctx).pop();
+                                        },
+                                        child: Text(
+                                          'Ok',
+                                          style: TextStyle(color: Colors.blue[900]),
+                                        )),
+                                  ],
+                                ));
+                      }
                     }
                   },
+                  child: Text(
+                    verifySent ? '$time S' : 'Verify',
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  ),
                 ),
               ),
               const SizedBox(
@@ -185,8 +182,7 @@ class _EmailVerificationState extends State<EmailVerification> {
               if (verifySent)
                 const Text(
                   'A confirmation email has been sent to you. Please click the link in the email to complete verification.',
-                  style: TextStyle(
-                      color: Colors.green, fontWeight: FontWeight.normal),
+                  style: TextStyle(color: Colors.green, fontWeight: FontWeight.normal),
                 ),
               if (timerFinished)
                 const SizedBox(

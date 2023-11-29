@@ -13,13 +13,13 @@ class ChangeName extends StatefulWidget {
 
 class _ChangeNameState extends State<ChangeName> {
   User? user;
-  TextEditingController? _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   String newName = '';
   @override
   void initState() {
-    _controller!.addListener(() {
+    _controller.addListener(() {
       setState(() {
-        newName = _controller!.text;
+        newName = _controller.text;
       });
     });
     super.initState();
@@ -27,7 +27,7 @@ class _ChangeNameState extends State<ChangeName> {
 
   @override
   void dispose() {
-    _controller!.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -45,24 +45,25 @@ class _ChangeNameState extends State<ChangeName> {
             TextFormField(
               controller: _controller,
               cursorColor: Colors.black,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(borderSide: BorderSide.none)),
+              decoration:
+                  const InputDecoration(border: OutlineInputBorder(borderSide: BorderSide.none)),
             ),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.black),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        const RoundedRectangleBorder(borderRadius: BorderRadius.zero))),
+                onPressed: newName == ''
+                    ? null
+                    : () {
+                        print(newName);
+                      },
                 child: const Text(
                   'Save',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.black),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero))),
-                onPressed: newName == '' ? null : () {
-                  print(newName);
-                },
               ),
             ),
           ],

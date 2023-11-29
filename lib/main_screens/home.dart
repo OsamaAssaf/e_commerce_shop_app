@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:osama_shop/account_screens/profile.dart';
@@ -28,10 +27,10 @@ class Home extends StatefulWidget {
   static const String pageRoute = '/home';
 
   @override
-  _HomeState createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
 
   late List<PreferredSizeWidget?> appBarWidgets;
@@ -39,7 +38,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   late TextEditingController _categorySearchController;
   late TabController _tabController;
-
 
   @override
   void initState() {
@@ -73,8 +71,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
                 onTap: () {
                   Navigator.of(context).push(PageTransition(
-                      child: const MessageScreen(),
-                      type: PageTransitionType.rightToLeft));
+                      child: const MessageScreen(), type: PageTransitionType.rightToLeft));
                 },
               ),
               InkWell(
@@ -85,8 +82,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
                 onTap: () {
                   Navigator.of(context).push(PageTransition(
-                      child: const WishlistScreen(),
-                      type: PageTransitionType.rightToLeft));
+                      child: const WishlistScreen(), type: PageTransitionType.rightToLeft));
                 },
               ),
             ],
@@ -116,8 +112,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             onTap: () {
               Navigator.of(context).push(PageTransition(
-                  child: const ShoppingBagScreen(),
-                  type: PageTransitionType.rightToLeft));
+                  child: const ShoppingBagScreen(), type: PageTransitionType.rightToLeft));
             },
           ),
           const SizedBox(
@@ -194,8 +189,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             onTap: () {
               Navigator.of(context).push(PageTransition(
-                  child: const MessageScreen(),
-                  type: PageTransitionType.rightToLeft));
+                  child: const MessageScreen(), type: PageTransitionType.rightToLeft));
             },
           ),
         ),
@@ -212,8 +206,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             onTap: () {
               Navigator.of(context).push(PageTransition(
-                  child: const ShoppingBagScreen(),
-                  type: PageTransitionType.rightToLeft));
+                  child: const ShoppingBagScreen(), type: PageTransitionType.rightToLeft));
             },
           ),
           const SizedBox(
@@ -267,8 +260,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             onTap: () {
               Navigator.of(context).push(PageTransition(
-                  child: const MessageScreen(),
-                  type: PageTransitionType.rightToLeft));
+                  child: const MessageScreen(), type: PageTransitionType.rightToLeft));
             },
           ),
         ),
@@ -285,8 +277,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             onTap: () {
               Navigator.of(context).push(PageTransition(
-                  child: const ShoppingBagScreen(),
-                  type: PageTransitionType.rightToLeft));
+                  child: const ShoppingBagScreen(), type: PageTransitionType.rightToLeft));
             },
           ),
           const SizedBox(
@@ -311,8 +302,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             onTap: () {
               Navigator.of(context).push(PageTransition(
-                  child: const MessageScreen(),
-                  type: PageTransitionType.rightToLeft));
+                  child: const MessageScreen(), type: PageTransitionType.rightToLeft));
             },
           ),
         ),
@@ -328,9 +318,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               size: 28,
             ),
             onTap: () {
-              Navigator.of(context).push(PageTransition(
-                  child: const AuthScreen(),
-                  type: PageTransitionType.rightToLeft));
+              Navigator.of(context).push(
+                  PageTransition(child: const AuthScreen(), type: PageTransitionType.rightToLeft));
             },
           ),
           const SizedBox(
@@ -344,8 +333,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             onTap: () {
               Navigator.of(context).push(PageTransition(
-                  child: const ShoppingBagScreen(),
-                  type: PageTransitionType.rightToLeft));
+                  child: const ShoppingBagScreen(), type: PageTransitionType.rightToLeft));
             },
           ),
           const SizedBox(
@@ -444,8 +432,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         ),
                         onTap: () {
                           Navigator.of(context).push(PageTransition(
-                              child: const SettingsScreen(),
-                              type: PageTransitionType.rightToLeft));
+                              child: const SettingsScreen(), type: PageTransitionType.rightToLeft));
                         },
                       ),
                       const SizedBox(
@@ -470,22 +457,25 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   height: 32.0,
                 ),
                 Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        if(context.read<Auth>().user == null){
-                          PushScreens.pushScreens(context, const AuthScreen());
-                        }else{
-                          PushScreens.pushScreens(context, const Profile());
-                        }
-
-                      },
-                      child: Text(
-                        context.watch<Auth>().user == null? 'SIGN IN / REGISTER >': context.watch<Auth>().user!.email != null?'Hi, ${context.watch<Auth>().user!.email!.split('@')[0]}':'Hi, ${context.watch<Auth>().user!.phoneNumber}',
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (context.read<Auth>().user == null) {
+                        PushScreens.pushScreens(context, const AuthScreen());
+                      } else {
+                        PushScreens.pushScreens(context, const Profile());
+                      }
+                    },
+                    child: Text(
+                      context.watch<Auth>().user == null
+                          ? 'SIGN IN / REGISTER >'
+                          : context.watch<Auth>().user!.email != null
+                              ? 'Hi, ${context.watch<Auth>().user!.email!.split('@')[0]}'
+                              : 'Hi, ${context.watch<Auth>().user!.phoneNumber}',
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                   ),
+                ),
                 const SizedBox(
                   height: 32.0,
                 ),
@@ -493,12 +483,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   padding: const EdgeInsets.all(16.0),
                   child: DefaultTextStyle(
                     style: Theme.of(context).textTheme.bodyText1!,
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
                           child: Column(
-                            children: const [
+                            children: [
                               Icon(
                                 Icons.label_important_outline_rounded,
                                 size: 32,
@@ -512,7 +502,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         ),
                         InkWell(
                           child: Column(
-                            children: const [
+                            children: [
                               Icon(
                                 Icons.paid_outlined,
                                 size: 32,
@@ -526,7 +516,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         ),
                         InkWell(
                           child: Column(
-                            children: const [
+                            children: [
                               Icon(
                                 Icons.account_balance_wallet_outlined,
                                 size: 32,
@@ -540,7 +530,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         ),
                         InkWell(
                           child: Column(
-                            children: const [
+                            children: [
                               Icon(
                                 Icons.card_giftcard_outlined,
                                 size: 32,
@@ -580,12 +570,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: DefaultTextStyle(
                           style: Theme.of(context).textTheme.bodyText1!,
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               InkWell(
                                 child: Column(
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.credit_card_outlined,
                                       size: 32,
@@ -599,7 +589,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               ),
                               InkWell(
                                 child: Column(
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.storage_sharp,
                                       size: 32,
@@ -613,7 +603,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               ),
                               InkWell(
                                 child: Column(
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.art_track,
                                       size: 32,
@@ -627,7 +617,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               ),
                               InkWell(
                                 child: Column(
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.backpack_sharp,
                                       size: 32,
@@ -662,12 +652,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: DefaultTextStyle(
                           style: Theme.of(context).textTheme.bodyText1!,
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               InkWell(
                                 child: Column(
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.support_agent_outlined,
                                       size: 32,
@@ -681,7 +671,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               ),
                               InkWell(
                                 child: Column(
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.playlist_add_check,
                                       size: 32,
@@ -695,7 +685,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               ),
                               InkWell(
                                 child: Column(
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.lock_open_outlined,
                                       size: 32,
@@ -709,7 +699,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               ),
                               InkWell(
                                 child: Column(
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.ios_share,
                                       size: 32,
@@ -747,8 +737,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           unselectedLabelColor: Colors.grey[600],
                           indicatorColor: Colors.black,
                           indicatorWeight: 2,
-                          indicatorPadding:
-                              const EdgeInsets.symmetric(horizontal: 16.0),
+                          indicatorPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                           isScrollable: true,
                           tabs: const [
                             Tab(
@@ -765,8 +754,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             controller: _tabController,
                             children: [
                               Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   const Icon(
                                     Icons.favorite_border_sharp,
@@ -775,9 +763,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                   RichText(
                                     text: TextSpan(
                                         text: 'Login',
-                                        style: TextStyle(
-                                            color: Colors.blue[900],
-                                            fontSize: 18.0),
+                                        style: TextStyle(color: Colors.blue[900], fontSize: 18.0),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
                                             Navigator.of(context).push(PageTransition(
@@ -787,17 +773,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         children: [
                                           TextSpan(
                                             text: ' to view your Wishlist',
-                                            style: TextStyle(
-                                                color: Colors.grey[700],
-                                                fontSize: 18.0),
+                                            style:
+                                                TextStyle(color: Colors.grey[700], fontSize: 18.0),
                                           ),
                                         ]),
                                   ),
                                 ],
                               ),
                               Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
                                     'You have not viewed anything.',
@@ -805,11 +789,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                   ),
                                   OutlinedButton(
                                     style: ButtonStyle(
-                                      shape: MaterialStateProperty.all(
-                                          const RoundedRectangleBorder(
-                                              side: BorderSide(
-                                                  color: Colors.grey,
-                                                  width: 2.0))),
+                                      shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                                          side: BorderSide(color: Colors.grey, width: 2.0))),
                                     ),
                                     onPressed: () {
                                       setState(() {
@@ -833,8 +814,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ],
             ),
           ),
-          builder: (BuildContext context, Widget child,
-              IndicatorController controller) {
+          builder: (BuildContext context, Widget child, IndicatorController controller) {
             return AnimatedBuilder(
               animation: controller,
               builder: (BuildContext context, _) {
@@ -849,9 +829,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           width: 30,
                           child: CircularProgressIndicator(
                             color: Colors.black,
-                            value: !controller.isLoading
-                                ? controller.value.clamp(0.0, 1.0)
-                                : null,
+                            value: !controller.isLoading ? controller.value.clamp(0.0, 1.0) : null,
                           ),
                         ),
                       ),

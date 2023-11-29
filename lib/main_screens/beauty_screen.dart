@@ -4,12 +4,12 @@ class BeautyScreen extends StatefulWidget {
   const BeautyScreen({Key? key}) : super(key: key);
 
   @override
-  _BeautyScreenState createState() => _BeautyScreenState();
+  BeautyScreenState createState() => BeautyScreenState();
 }
 
-class _BeautyScreenState extends State<BeautyScreen> {
+class BeautyScreenState extends State<BeautyScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

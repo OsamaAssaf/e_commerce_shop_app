@@ -7,10 +7,9 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:country_codes/country_codes.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../main_screens/Home.dart';
+import '../main_screens/home.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'dart:ui' as ui;
-
 
 class FirstTime extends StatefulWidget {
   const FirstTime({Key? key}) : super(key: key);
@@ -18,10 +17,10 @@ class FirstTime extends StatefulWidget {
   static const String pageRoute = '/first_time';
 
   @override
-  _FirstTimeState createState() => _FirstTimeState();
+  FirstTimeState createState() => FirstTimeState();
 }
 
-class _FirstTimeState extends State<FirstTime> {
+class FirstTimeState extends State<FirstTime> {
   late ItemScrollController? _scrollController;
   late TextEditingController _countryController;
   late TextEditingController _currencyController;
@@ -46,7 +45,7 @@ class _FirstTimeState extends State<FirstTime> {
     currentCountry = details.name!;
     List<Country>? countries;
     try {
-      countries = await IsoCountries.iso_countries;
+      countries = await IsoCountries.isoCountries;
     } on PlatformException {
       countries = null;
     }
@@ -60,18 +59,15 @@ class _FirstTimeState extends State<FirstTime> {
 
     for (int i = 0; i < alphabets.length; i++) {
       if (!alphabetsIndex.containsKey(alphabets[i])) {
-        String c =
-            countriesName.firstWhere((element) => element[0] == alphabets[i]);
-        alphabetsIndex[alphabets[i]] =
-            countriesName.indexWhere((element) => element == c);
+        String c = countriesName.firstWhere((element) => element[0] == alphabets[i]);
+        alphabetsIndex[alphabets[i]] = countriesName.indexWhere((element) => element == c);
       }
     }
   }
 
   void currency() {
     Locale locale = Localizations.localeOf(context);
-    NumberFormat format =
-        NumberFormat.simpleCurrency(locale: locale.toString());
+    NumberFormat format = NumberFormat.simpleCurrency(locale: locale.toString());
     currentCurrencyName = format.currencyName!;
   }
 
@@ -118,12 +114,15 @@ class _FirstTimeState extends State<FirstTime> {
                   fit: BoxFit.fill,
                   height: height * 0.25,
                 ),
-                 Positioned.fill(
-                  child: Align(
-                    child: Text(AppLocalizations.of(context).welcome,style: Theme.of(context).textTheme.headline2,),
-                    alignment: Alignment.bottomCenter,
-                  ),
+                Positioned.fill(
                   bottom: 20.0,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                      AppLocalizations.of(context)!.welcome,
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -131,25 +130,27 @@ class _FirstTimeState extends State<FirstTime> {
               height: 10.0,
             ),
             buildListTile(
-                context, height, width, AppLocalizations.of(context).region, currentCountry, () {
+                context, height, width, AppLocalizations.of(context)!.region, currentCountry, () {
               countryBottomSheet(context, height, width);
             }),
             // buildListTile(context, height, width),
             const Divider(),
-            buildListTile(context, height, width, AppLocalizations.of(context).language, language!, () {
+            buildListTile(context, height, width, AppLocalizations.of(context)!.language, language!,
+                () {
               languageBottomSheet(context, height);
             }),
             // buildListTile2(context, height),
             const Divider(),
             buildListTile(
-                context, height, width, AppLocalizations.of(context).currency, currentCurrencyName, () {
+                context, height, width, AppLocalizations.of(context)!.currency, currentCurrencyName,
+                () {
               currencyBottomSheet(context, height);
             }),
             // buildListTile3(context, height),
             const Divider(),
             goShoppingButton(),
             Text(
-              AppLocalizations.of(context).first_hint,
+              AppLocalizations.of(context)!.first_hint,
               textAlign: TextAlign.center,
             ),
           ],
@@ -158,18 +159,26 @@ class _FirstTimeState extends State<FirstTime> {
     );
   }
 
-  ListTile buildListTile(BuildContext context, double height, double width,
-      String title, String subTitle, Function() onTap) {
+  ListTile buildListTile(BuildContext context, double height, double width, String title,
+      String subTitle, Function() onTap) {
     return ListTile(
-      title: Text(title,style: Theme.of(context).textTheme.headline3,),
-      subtitle: Text(subTitle,style: Theme.of(context).textTheme.subtitle1,),
-      trailing: const Icon(Icons.arrow_forward_ios,size: 18.0,),
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.headline3,
+      ),
+      subtitle: Text(
+        subTitle,
+        style: Theme.of(context).textTheme.subtitle1,
+      ),
+      trailing: const Icon(
+        Icons.arrow_forward_ios,
+        size: 18.0,
+      ),
       onTap: onTap,
     );
   }
 
-  Future<dynamic> countryBottomSheet(
-      BuildContext context, double height, double width) {
+  Future<dynamic> countryBottomSheet(BuildContext context, double height, double width) {
     return showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -179,168 +188,145 @@ class _FirstTimeState extends State<FirstTime> {
             child: Column(
               children: [
                 Align(
+                  alignment: Alignment.topRight,
                   child: GestureDetector(
                     child: const Icon(Icons.close),
                     onTap: () {
                       Navigator.of(context).pop();
                     },
                   ),
-                  alignment: Alignment.topRight,
                 ),
-                Text(AppLocalizations.of(context).region),
+                Text(AppLocalizations.of(context)!.region),
                 const SizedBox(
                   height: 10.0,
                 ),
                 const Divider(),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: TextField(
                     controller: _countryController,
                     decoration: InputDecoration(
                         fillColor: Colors.grey[200],
                         filled: true,
                         prefixIcon: const Icon(Icons.search),
-                        hintText: AppLocalizations.of(context).region,
-                        border: const OutlineInputBorder(
-                            borderSide: BorderSide.none)),
+                        hintText: AppLocalizations.of(context)!.region,
+                        border: const OutlineInputBorder(borderSide: BorderSide.none)),
                     onChanged: (value) {},
                   ),
                 ),
                 countrySearch == ''
                     ? Expanded(
-                  child: Stack(
-                    children: [
-                      Directionality(
-                        textDirection: ui.TextDirection.ltr,
-                        child: SizedBox(
-                          width: width,
-                          height: height,
-                          child: ScrollablePositionedList.builder(
-                            itemScrollController: _scrollController,
-                            itemCount: countriesName.length,
-                            itemBuilder: (ctx, index) {
-                              String country = countriesName[index];
-                              if (index == alphabetsIndex[country[0]]) {
-                                return Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                      const EdgeInsets.only(left: 16.0),
-                                      child: Text(
-                                        alphabetsIndex.keys.firstWhere(
-                                                (element) =>
-                                            element == country[0]),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    ListTile(
-                                        title: Text(country),
-                                        onTap: () {
-                                          setState(() {
-                                            currentCountry = country;
-                                          });
-                                          Navigator.of(context).pop();
-                                        }),
-                                  ],
-                                );
-                              }
-                              return ListTile(
-                                title: Text(country),
-                                onTap: () {
-                                  setState(() {
-                                    currentCountry = country;
-                                  });
-                                  Navigator.of(context).pop();
-                                },
-                              );
-                            },
-                          ),
+                        child: Stack(
+                          children: [
+                            Directionality(
+                              textDirection: ui.TextDirection.ltr,
+                              child: SizedBox(
+                                width: width,
+                                height: height,
+                                child: ScrollablePositionedList.builder(
+                                  itemScrollController: _scrollController,
+                                  itemCount: countriesName.length,
+                                  itemBuilder: (ctx, index) {
+                                    String country = countriesName[index];
+                                    if (index == alphabetsIndex[country[0]]) {
+                                      return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 16.0),
+                                            child: Text(
+                                              alphabetsIndex.keys
+                                                  .firstWhere((element) => element == country[0]),
+                                              style: const TextStyle(fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          ListTile(
+                                              title: Text(country),
+                                              onTap: () {
+                                                setState(() {
+                                                  currentCountry = country;
+                                                });
+                                                Navigator.of(context).pop();
+                                              }),
+                                        ],
+                                      );
+                                    }
+                                    return ListTile(
+                                      title: Text(country),
+                                      onTap: () {
+                                        setState(() {
+                                          currentCountry = country;
+                                        });
+                                        Navigator.of(context).pop();
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              right: 5,
+                              child: SizedBox(
+                                width: width * 0.05,
+                                height: height,
+                                child: ListView.builder(
+                                  itemCount: alphabets.length,
+                                  itemBuilder: (ctx, index) {
+                                    return Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        GestureDetector(
+                                          child: Text(alphabets[index]),
+                                          onTap: () {
+                                            print('onTap: ${alphabetsIndex[alphabets[index]]}');
+                                            _scrollController!.scrollTo(
+                                                index: alphabetsIndex[alphabets[index]]!,
+                                                duration: const Duration(milliseconds: 200));
+                                          },
+                                          onVerticalDragStart: (DragStartDetails details) {
+                                            print('Start: $details');
+                                            print('Start: ${alphabetsIndex[alphabets[index]]}');
+                                            _scrollController!.scrollTo(
+                                                index: alphabetsIndex[alphabets[index]]!,
+                                                duration: const Duration(milliseconds: 200));
+                                          },
+                                          onVerticalDragUpdate: (DragUpdateDetails details) {
+                                            print('Update: $details');
+                                            print('Update: ${alphabetsIndex[alphabets[index]]}');
+                                            _scrollController!.scrollTo(
+                                                index: alphabetsIndex[alphabets[index]]!,
+                                                duration: const Duration(milliseconds: 200));
+                                          },
+                                          onVerticalDragEnd: (DragEndDetails details) {
+                                            print('End: $details');
+                                            print('End: ${alphabetsIndex[alphabets[index]]}');
+                                            _scrollController!.scrollTo(
+                                                index: alphabetsIndex[alphabets[index]]!,
+                                                duration: const Duration(milliseconds: 200));
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 2.0,
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      Positioned(
-                        right: 5,
-                        child: SizedBox(
-                          width: width * 0.05,
-                          height: height,
-                          child: ListView.builder(
-                            itemCount: alphabets.length,
-                            itemBuilder: (ctx, index) {
-                              return Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    child: Text(alphabets[index]),
-                                    onTap: () {
-                                      print(
-                                          'onTap: ${alphabetsIndex[alphabets[index]]}');
-                                      _scrollController!.scrollTo(
-                                          index: alphabetsIndex[
-                                          alphabets[index]]!,
-                                          duration: const Duration(
-                                              milliseconds: 200));
-                                    },
-                                    onVerticalDragStart:
-                                        (DragStartDetails details) {
-                                      print('Start: $details');
-                                      print(
-                                          'Start: ${alphabetsIndex[alphabets[index]]}');
-                                      _scrollController!.scrollTo(
-                                          index: alphabetsIndex[
-                                          alphabets[index]]!,
-                                          duration: const Duration(
-                                              milliseconds: 200));
-                                    },
-                                    onVerticalDragUpdate:
-                                        (DragUpdateDetails details) {
-                                      print('Update: $details');
-                                      print(
-                                          'Update: ${alphabetsIndex[alphabets[index]]}');
-                                      _scrollController!.scrollTo(
-                                          index: alphabetsIndex[
-                                          alphabets[index]]!,
-                                          duration: const Duration(
-                                              milliseconds: 200));
-                                    },
-                                    onVerticalDragEnd:
-                                        (DragEndDetails details) {
-                                      print('End: $details');
-                                      print(
-                                          'End: ${alphabetsIndex[alphabets[index]]}');
-                                      _scrollController!.scrollTo(
-                                          index: alphabetsIndex[
-                                          alphabets[index]]!,
-                                          duration: const Duration(
-                                              milliseconds: 200));
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 2.0,
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                      )
                     : Expanded(
-                  child: ListView.builder(
-                      itemCount: countrySearchList.length,
-                      itemBuilder: (ctx, index) {
-                        return ListTile(
-                          title: Text(countrySearchList[index]),
-                        );
-                      }),
-                ),
+                        child: ListView.builder(
+                            itemCount: countrySearchList.length,
+                            itemBuilder: (ctx, index) {
+                              return ListTile(
+                                title: Text(countrySearchList[index]),
+                              );
+                            }),
+                      ),
               ],
             ),
           );
@@ -357,15 +343,15 @@ class _FirstTimeState extends State<FirstTime> {
           child: Column(
             children: [
               Align(
+                alignment: Alignment.topRight,
                 child: GestureDetector(
                   child: const Icon(Icons.close),
                   onTap: () {
                     Navigator.of(context).pop();
                   },
                 ),
-                alignment: Alignment.topRight,
               ),
-              Text(AppLocalizations.of(context).language),
+              Text(AppLocalizations.of(context)!.language),
               const SizedBox(
                 height: 10.0,
               ),
@@ -408,31 +394,29 @@ class _FirstTimeState extends State<FirstTime> {
             child: Column(
               children: [
                 Align(
+                  alignment: Alignment.topRight,
                   child: GestureDetector(
                     child: const Icon(Icons.close),
                     onTap: () {
                       Navigator.of(context).pop();
                     },
                   ),
-                  alignment: Alignment.topRight,
                 ),
-                 Text(AppLocalizations.of(context).currency),
+                Text(AppLocalizations.of(context)!.currency),
                 const SizedBox(
                   height: 10.0,
                 ),
                 const Divider(),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: TextField(
                     controller: _currencyController,
                     decoration: InputDecoration(
                         fillColor: Colors.grey[200],
                         filled: true,
                         prefixIcon: const Icon(Icons.search),
-                        hintText: AppLocalizations.of(context).currency,
-                        border: const OutlineInputBorder(
-                            borderSide: BorderSide.none)),
+                        hintText: AppLocalizations.of(context)!.currency,
+                        border: const OutlineInputBorder(borderSide: BorderSide.none)),
                     onChanged: (value) {},
                   ),
                 ),
@@ -443,8 +427,7 @@ class _FirstTimeState extends State<FirstTime> {
                       itemCount: currencyList.length,
                       itemBuilder: (ctx, index) {
                         String currency = currencyList[index];
-                        NumberFormat format =
-                            NumberFormat.simpleCurrency(name: currency);
+                        NumberFormat format = NumberFormat.simpleCurrency(name: currency);
                         return Column(
                           children: [
                             const Divider(),
@@ -481,26 +464,25 @@ class _FirstTimeState extends State<FirstTime> {
       child: SizedBox(
         width: double.infinity,
         child: ElevatedButton(
-          child: Text(
-            AppLocalizations.of(context).go_shopping,
-            style:const TextStyle(fontWeight: FontWeight.bold),
-          ),
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.black),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero))),
+                  const RoundedRectangleBorder(borderRadius: BorderRadius.zero))),
           onPressed: () async {
             context.read<Settings>().setCountry(currentCountry);
             context.read<Settings>().setCurrency(currentCurrencyName);
-            SharedPreferences _prefs = await SharedPreferences.getInstance();
-            _prefs.setBool('isFirstTime', false);
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => const Home()));
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setBool('isFirstTime', false);
+            if (context.mounted) {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => const Home()));
+            }
           },
+          child: Text(
+            AppLocalizations.of(context)!.go_shopping,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );
   }
-
 }

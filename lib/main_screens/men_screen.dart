@@ -4,12 +4,12 @@ class MenScreen extends StatefulWidget {
   const MenScreen({Key? key}) : super(key: key);
 
   @override
-  _MenScreenState createState() => _MenScreenState();
+  MenScreenState createState() => MenScreenState();
 }
 
-class _MenScreenState extends State<MenScreen> {
+class MenScreenState extends State<MenScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:osama_shop/controllers/auth.dart';
 import 'package:osama_shop/secondary_screens/terms_and_conditions_screen.dart';
@@ -15,11 +13,10 @@ class AuthScreen extends StatefulWidget {
   static const String pageRoute = '/auth_screen';
 
   @override
-  _AuthScreenState createState() => _AuthScreenState();
+  AuthScreenState createState() => AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen>
-    with SingleTickerProviderStateMixin {
+class AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -51,6 +48,7 @@ class _AuthScreenState extends State<AuthScreen>
           centerTitle: true,
           actions: [
             Align(
+              alignment: Alignment.topRight,
               child: IconButton(
                 icon: const Icon(
                   Icons.close,
@@ -60,7 +58,6 @@ class _AuthScreenState extends State<AuthScreen>
                   Navigator.of(context).pop();
                 },
               ),
-              alignment: Alignment.topRight,
             ),
           ],
           bottom: TabBar(
@@ -144,9 +141,7 @@ class _AuthenticateState extends State<_Authenticate> {
       _formKey.currentState!.save();
       if (_authMode == AuthMode.email) {
         try {
-          await context
-              .read<Auth>()
-              .emailAndPassword(email, password, widget.isReg);
+          await context.read<Auth>().emailAndPassword(email, password, widget.isReg);
           // if(widget.isReg){
           //   emailTimer = Timer.periodic(const Duration(seconds: 5), (timer) async{
           //     await FirebaseAuth.instance.currentUser!.reload();
@@ -160,7 +155,6 @@ class _AuthenticateState extends State<_Authenticate> {
           //   });
           //
           // }
-
         } catch (e) {
           String errorMessage = 'Error Occurred';
           if (e == 'weak-password') {
@@ -172,22 +166,24 @@ class _AuthenticateState extends State<_Authenticate> {
           } else if (e == 'wrong-password') {
             errorMessage = 'Wrong password provided for that user.';
           }
-          showDialog(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                    content: Text(errorMessage),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(ctx).pop();
-                        },
-                        child: Text(
-                          'Ok',
-                          style: TextStyle(color: Colors.blue[900]),
+          if (context.mounted) {
+            showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                      content: Text(errorMessage),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop();
+                          },
+                          child: Text(
+                            'Ok',
+                            style: TextStyle(color: Colors.blue[900]),
+                          ),
                         ),
-                      ),
-                    ],
-                  ));
+                      ],
+                    ));
+          }
         }
       } else {
         await context.read<Auth>().verifyCode(_codeController.text.trim());
@@ -225,8 +221,8 @@ class _AuthenticateState extends State<_Authenticate> {
                         const Text('Phone number'),
                         Row(
                           children: [
-                            Row(
-                              children: const [
+                            const Row(
+                              children: [
                                 Text('JO+962'),
                                 Icon(Icons.arrow_drop_down_outlined),
                               ],
@@ -243,8 +239,7 @@ class _AuthenticateState extends State<_Authenticate> {
                                   cursorColor: Colors.black,
                                   decoration: const InputDecoration(
                                       hintText: 'Please input the phone number',
-                                      hintStyle: TextStyle(
-                                          color: Colors.grey, fontSize: 18),
+                                      hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
                                       border: InputBorder.none),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
@@ -311,30 +306,25 @@ class _AuthenticateState extends State<_Authenticate> {
                               onPressed: () async {
                                 if (_phoneFormKey.currentState!.validate()) {
                                   _phoneFormKey.currentState!.save();
-                                  codeTimer = Timer.periodic(
-                                      const Duration(seconds: 60), (timer) {
+                                  codeTimer = Timer.periodic(const Duration(seconds: 60), (timer) {
                                     codeSentTimer--;
                                   });
 
-                                  await context
-                                      .read<Auth>()
-                                      .phoneAuth(phoneNumber.trim(), context);
+                                  await context.read<Auth>().phoneAuth(phoneNumber.trim(), context);
 
                                   codeTimer!.cancel();
                                   codeTimer = null;
                                 }
                               },
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.zero)),
+                                  backgroundColor: MaterialStateProperty.all(Colors.black)),
                               child: Text(
                                 codeSent ? '$codeSentTimer' : 'Send',
                                 style: const TextStyle(fontSize: 16),
                               ),
-                              style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.zero)),
-                                  backgroundColor:
-                                      MaterialStateProperty.all(Colors.black)),
                             )
                           ],
                         ),
@@ -382,10 +372,10 @@ class _AuthenticateState extends State<_Authenticate> {
                           children: [
                             const Text('Country/Region:'),
                             GestureDetector(
-                              child: Row(
+                              child: const Row(
                                 children: [
                                   Text('Jordan'),
-                                  const Icon(Icons.arrow_drop_down_outlined),
+                                  Icon(Icons.arrow_drop_down_outlined),
                                 ],
                               ),
                             ),
@@ -398,8 +388,7 @@ class _AuthenticateState extends State<_Authenticate> {
                               label: Text('EMAIL ADDRESS'),
                               labelStyle: TextStyle(color: Colors.grey),
                               border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 2, color: Colors.grey))),
+                                  borderSide: BorderSide(width: 2, color: Colors.grey))),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter an email address.';
@@ -420,8 +409,7 @@ class _AuthenticateState extends State<_Authenticate> {
                               label: const Text('PASSWORD'),
                               labelStyle: const TextStyle(color: Colors.grey),
                               border: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 2, color: Colors.grey)),
+                                  borderSide: BorderSide(width: 2, color: Colors.grey)),
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -440,9 +428,7 @@ class _AuthenticateState extends State<_Authenticate> {
                               helperMaxLines: 3,
                             ),
                             validator: (value) {
-                              if (value == null ||
-                                  value.isEmpty ||
-                                  value.length < 8) {
+                              if (value == null || value.isEmpty || value.length < 8) {
                                 return '8 characters minimum';
                               } else if (!value.contains(RegExp(r'[0-9]'))) {
                                 return 'At least one number';
@@ -463,8 +449,7 @@ class _AuthenticateState extends State<_Authenticate> {
                                 label: const Text('PASSWORD'),
                                 labelStyle: const TextStyle(color: Colors.grey),
                                 border: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.grey)),
+                                    borderSide: BorderSide(width: 2, color: Colors.grey)),
                                 suffixIcon: IconButton(
                                   onPressed: () {
                                     setState(() {
@@ -500,27 +485,22 @@ class _AuthenticateState extends State<_Authenticate> {
                       ],
                     ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 24.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 24.0),
                     child: SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        child: Text(
-                          widget.isReg ? 'REGISTER' : 'SIGN IN',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 22.0),
-                        ),
                         style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.zero)),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.black)),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                const RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
                         onPressed: () async {
                           await _submit();
                         },
+                        child: Text(
+                          widget.isReg ? 'REGISTER' : 'SIGN IN',
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
+                        ),
                       ),
                     ),
                   ),
@@ -532,9 +512,7 @@ class _AuthenticateState extends State<_Authenticate> {
                     child: TextButton(
                       onPressed: () {
                         setState(() {
-                          _authMode = _authMode == AuthMode.phone
-                              ? AuthMode.email
-                              : AuthMode.phone;
+                          _authMode = _authMode == AuthMode.phone ? AuthMode.email : AuthMode.phone;
                         });
                       },
                       child: Text(
@@ -616,12 +594,10 @@ class _AuthenticateState extends State<_Authenticate> {
                         TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.of(context)
-                                  .pushNamed(TermsConditions.pageRoute);
+                              Navigator.of(context).pushNamed(TermsConditions.pageRoute);
                             },
                           text: 'Terms & Conditions',
-                          style:
-                              TextStyle(color: Colors.blue[900], fontSize: 16),
+                          style: TextStyle(color: Colors.blue[900], fontSize: 16),
                         ),
                       ],
                     ),

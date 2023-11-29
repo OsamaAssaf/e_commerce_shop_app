@@ -39,8 +39,8 @@ class MessageScreen extends StatelessWidget {
           },
         ),
         bottom: const PreferredSize(
-          child: Divider(),
           preferredSize: Size.fromHeight(0.0),
+          child: Divider(),
         ),
       ),
       body: SafeArea(
@@ -49,29 +49,20 @@ class MessageScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  _card(
-                      Icons.list_alt_outlined,
-                      'Orders',
-                      'Keep updated on the status of orders and login.',
-                      context, () {
+                  _card(Icons.list_alt_outlined, 'Orders',
+                      'Keep updated on the status of orders and login.', context, () {
                     if (context.read<Auth>().user == null) {
                       Navigator.of(context).push(PageTransition(
-                          child: const AuthScreen(),
-                          type: PageTransitionType.rightToLeft));
+                          child: const AuthScreen(), type: PageTransitionType.rightToLeft));
                     } else {
                       Navigator.of(context).push(PageTransition(
-                          child: const OrdersScreen(),
-                          type: PageTransitionType.rightToLeft));
+                          child: const OrdersScreen(), type: PageTransitionType.rightToLeft));
                     }
                   }),
-                  _card(
-                      Icons.volume_up_outlined,
-                      'News',
-                      'Be the first to know website/account update an login.',
-                      context, () {
+                  _card(Icons.volume_up_outlined, 'News',
+                      'Be the first to know website/account update an login.', context, () {
                     Navigator.of(context).push(PageTransition(
-                        child: const NewsScreen(),
-                        type: PageTransitionType.rightToLeft));
+                        child: const NewsScreen(), type: PageTransitionType.rightToLeft));
                   }),
                 ],
               ),
@@ -82,8 +73,7 @@ class MessageScreen extends StatelessWidget {
                   'New likes, comments and followers.'),
               _listTile(Icons.check_circle, 'Activities',
                   'Get the latest information of our events and interactive games'),
-              _listTile(Icons.local_offer_outlined, 'Promo',
-                  'Don\'t miss out on promotions!'),
+              _listTile(Icons.local_offer_outlined, 'Promo', 'Don\'t miss out on promotions!'),
             ],
           ),
         ),
@@ -94,11 +84,11 @@ class MessageScreen extends StatelessWidget {
   ListTile _listTile(IconData icon, String title, String subtitle) {
     return ListTile(
       leading: CircleAvatar(
+        backgroundColor: Colors.grey[400],
         child: Icon(
           icon,
           color: Colors.black,
         ),
-        backgroundColor: Colors.grey[400],
       ),
       title: Text(title),
       subtitle: Column(
@@ -114,8 +104,8 @@ class MessageScreen extends StatelessWidget {
     );
   }
 
-  Expanded _card(IconData icon, String title, String subtitle,
-      BuildContext context, Function() onTap) {
+  Expanded _card(
+      IconData icon, String title, String subtitle, BuildContext context, Function() onTap) {
     return Expanded(
       child: InkWell(
         onTap: onTap,
@@ -129,13 +119,13 @@ class MessageScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
+                    backgroundColor: Colors.black,
+                    radius: 30,
                     child: Icon(
                       icon,
                       size: 32,
                       color: Colors.white,
                     ),
-                    backgroundColor: Colors.black,
-                    radius: 30,
                   ),
                   const SizedBox(
                     height: 16.0,

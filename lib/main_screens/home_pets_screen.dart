@@ -4,12 +4,12 @@ class HomePetsScreen extends StatefulWidget {
   const HomePetsScreen({Key? key}) : super(key: key);
 
   @override
-  _HomePetsScreenState createState() => _HomePetsScreenState();
+  HomePetsScreenState createState() => HomePetsScreenState();
 }
 
-class _HomePetsScreenState extends State<HomePetsScreen> {
+class HomePetsScreenState extends State<HomePetsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

@@ -1,44 +1,26 @@
 {
   "project_info": {
-    "project_number": "338518718548",
-    "project_id": "osama-shop",
-    "storage_bucket": "osama-shop.appspot.com"
+    "project_number": "322237458787",
+    "project_id": "osama-shop-f1780",
+    "storage_bucket": "osama-shop-f1780.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:338518718548:android:8898b6f005dcc456d895c1",
+        "mobilesdk_app_id": "1:322237458787:android:61373c38adc38ba5650b56",
         "android_client_info": {
           "package_name": "com.assaf.osama_shop"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "338518718548-8uqfr7c466sdt3rcga06dvu0h97h5ukb.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.assaf.osama_shop",
-            "certificate_hash": "0bf77e441ce6bf2428a090ecf3f595281ec545a7"
-          }
-        },
-        {
-          "client_id": "338518718548-4a6n77t0kr937npeg5gib8fglct1hiur.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAQhokJyD6yIiY1T4RqqE5DgDkwGdFBJvc"
+          "current_key": "AIzaSyC68eFgzMsPwZqNLH_-C9p0FmMFHR0YWAs"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "338518718548-4a6n77t0kr937npeg5gib8fglct1hiur.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

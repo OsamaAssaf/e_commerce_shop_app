@@ -11,16 +11,16 @@ class Settings with ChangeNotifier {
     "en": {"name": "English", "nativeName": "English"},
   };
 
-  initLocale()async{
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    String stringLocale = _prefs.getString('locale') ?? const Locale('en').toString();
+  initLocale() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringLocale = prefs.getString('locale') ?? const Locale('en').toString();
     locale = Locale.fromSubtags(languageCode: stringLocale);
     language = isoLanguages[locale!.languageCode]!['nativeName'];
   }
 
-  void setLocale(Locale value)async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    _prefs.setString('locale', value.toString());
+  void setLocale(Locale value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('locale', value.toString());
     locale = value;
     language = isoLanguages[value.languageCode]!['nativeName'];
     notifyListeners();
@@ -46,13 +46,13 @@ class Settings with ChangeNotifier {
     'JOD'
   ];
 
-  void setCountry(String value){
+  void setCountry(String value) {
     country = value;
     notifyListeners();
   }
-  void setCurrency(String value){
+
+  void setCurrency(String value) {
     currency = value;
     notifyListeners();
   }
-
 }

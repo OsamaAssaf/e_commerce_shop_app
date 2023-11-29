@@ -4,12 +4,12 @@ class KidsScreen extends StatefulWidget {
   const KidsScreen({Key? key}) : super(key: key);
 
   @override
-  _KidsScreenState createState() => _KidsScreenState();
+  KidsScreenState createState() => KidsScreenState();
 }
 
-class _KidsScreenState extends State<KidsScreen> {
+class KidsScreenState extends State<KidsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

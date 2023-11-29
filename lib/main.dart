@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -13,19 +12,23 @@ import './secondary_screens/shopping_bag_screen.dart';
 import './secondary_screens/terms_and_conditions_screen.dart';
 import './secondary_screens/wishlist_screen.dart';
 import 'controllers/settings.dart';
-import 'main_screens/Home.dart';
+import 'main_screens/home.dart';
 import 'main_screens/settings_screen.dart';
 import 'controllers/auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 late bool isFirstTime;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-  SharedPreferences _prefs = await SharedPreferences.getInstance();
-  isFirstTime = _prefs.getBool('isFirstTime') ?? true;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  isFirstTime = prefs.getBool('isFirstTime') ?? true;
 
   runApp(MultiProvider(
     providers: [
@@ -86,26 +89,14 @@ class _MyAppState extends State<MyApp> {
               fontSize: 32,
             ),
           ),
-          headline2: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
-            color: Colors.black
-          ),
-          headline3:  TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: 16.0,
-              color: Colors.grey[700]
-          ),
-          headline4: const TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: 18.0,
-              color: Colors.black
-          ),
-          subtitle1: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16.0,
-              color: Colors.black
-          ),
+          headline2:
+              const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.black),
+          headline3:
+              TextStyle(fontWeight: FontWeight.normal, fontSize: 16.0, color: Colors.grey[700]),
+          headline4:
+              const TextStyle(fontWeight: FontWeight.normal, fontSize: 18.0, color: Colors.black),
+          subtitle1:
+              const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
           // headline3: GoogleFonts.notoSans(
           //   textStyle: const TextStyle(
           //     color: Colors.black,
@@ -140,7 +131,7 @@ class _MyAppState extends State<MyApp> {
           // ),
         ),
       ),
-      home:isFirstTime ?const FirstTime() :const Home(),
+      home: isFirstTime ? const FirstTime() : const Home(),
       routes: {
         Home.pageRoute: (_) => const Home(),
         FirstTime.pageRoute: (_) => const FirstTime(),
